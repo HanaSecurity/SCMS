@@ -30,13 +30,14 @@
         // 솔트와 함께 SHA-256으로 키 생성
         async function generateKey() {
             let currentDate = new Date();
-            let formattedDate = new Intl.DateTimeFormat('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Seoul'}).format(currentDate);
-            formattedDate = formattedDate.replace(/\. /g, '-'); // 마침표를 하이픈으로 변경
+            //let formattedDate = new Intl.DateTimeFormat('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Seoul'}).format(currentDate);
+            //formattedDate = formattedDate.replace(/\. /g, '-'); // 마침표를 하이픈으로 변경
             //formattedDate = formattedDate.replace(/[\.\- ]/g, ''); // 마침표, 하이픈, 공백을 제거
-            console.log(formattedDate);
+            currentDate.setHours(currentDate.getHours() + 9);
+            let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11);
             const salt = formattedDate; // 원하는 솔트 값
             const key = await sha256(inputText + salt);
-            document.getElementById('output').textContent = 'Generated Key: ' + key;
+            document.getElementById('output').textContent = 'Generated Key: ' + key + ' / salt: ' + salt;
         }
 
         function handleEnterKey(event) {
