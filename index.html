@@ -33,15 +33,15 @@
             let currentDate = new Date();
             currentDate.setHours(currentDate.getHours() + 9); // 한국 시간(GMT+9) 적용
             let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11); // 2024-04-04-16
-            let salt = formattedDate; // 날짜로 솔트 값 지정
-            let firstHash = await sha256(inputText + salt); // 신청번호 + 솔트
-            let hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
+            const salt = formattedDate; // 날짜로 솔트 값 지정
+            const firstHash = await sha256(inputText + salt); // 신청번호 + 솔트
+            const hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
             for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
             document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
         }
         
         function handleEnterKey(event) {
-            if (window.event.keyCode === 13) { // Enter 키 코드는 13
+            if (event.keyCode === 13) { // Enter 키 코드는 13
                 event.preventDefault(); // 폼 제출 방지
                 submitButton.click(); // 버튼 클릭 이벤트 발생
             }
