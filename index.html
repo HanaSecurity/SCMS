@@ -39,9 +39,9 @@
             let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11);
             const salt = formattedDate; // 원하는 솔트 값
             const firstHash = await sha256(inputText + salt);
-            const key = await sha256(firstHash);
-            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + a.substr(i*7, 1); }
-            document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + key.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
+            const hashKey = await sha256(firstHash);
+            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); }
+            document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
         }
         /*
         function handleKeyPress(event) {
