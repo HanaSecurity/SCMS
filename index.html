@@ -9,11 +9,14 @@
     <h1>Key Generation</h1>
     <p>신청번호 입력</p>
     <label for="input">Input:</label>
-    <input type="text" id="input">
-    <button onclick="generateKey()">Generate Key</button>
+    <input type="text" id="inputText">
+    <button id="submitButton" onclick="generateKey()">Generate Key</button>
     <p><div id="output"></div></p>
 
     <script>
+        var inputText = document.getElementById("inputText");
+        var submitButton = document.getElementById("submitButton");
+        
         // SHA-256 해시 함수
         async function sha256(message) {
             const encoder = new TextEncoder();
@@ -36,6 +39,15 @@
             const key = await sha256(input + salt);
             document.getElementById('output').textContent = 'Generated Key: ' + key;
         }
+
+        function handleEnterKey(event) {
+            if (event.keyCode === 13) { // Enter 키 코드는 13
+                event.preventDefault(); // 폼 제출 방지
+                submitButton.click(); // 버튼 클릭 이벤트 발생
+            }
+        }
+
+        inputText.addEventListener("keyup", handleEnterKey);
     </script>
 </body>
 </html>
