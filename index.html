@@ -1,11 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
-    <title>SCMS KEYGEN</title>
-  </head>
-  <body>
-    <h1>문서번호 입력</h1>
-    <input type="text"></input>
-  </body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCMS Key Generation</title>
+</head>
+<body>
+    <h1>Key Generation</h1>
+    <p>신청번호 입력</p>
+    <label for="input">Input:</label>
+    <input type="text" id="input">
+    <button onclick="generateKey()">Generate Key</button>
+    <div id="output"></div>
+
+    <script>
+        // SHA-256 해시 함수
+        async function sha256(message) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        // 솔트와 함께 SHA-256으로 키 생성
+        async function generateKey() {
+            const input = document.getElementById('input').value;
+            const salt = 'somesalt'; // 원하는 솔트 값
+            const key = await sha256(input + salt);
+            document.getElementById('output').textContent = 'Generated Key: ' + key;
+        }
+    </script>
+</body>
 </html>
