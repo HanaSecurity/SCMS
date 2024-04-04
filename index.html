@@ -37,6 +37,7 @@
             let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11);
             const salt = formattedDate; // 원하는 솔트 값
             const key = await sha256(inputText + salt);
+            key = await sha256(key);
             document.getElementById('output').textContent = 'Generated Key: ' + key + ' / salt: ' + salt;
         }
 
