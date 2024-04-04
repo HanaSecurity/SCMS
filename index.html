@@ -30,7 +30,7 @@
 
         // 솔트와 함께 SHA-256으로 키 생성
         async function generateKey() {
-            const SCMS_KEY = '';
+            let SCMS_KEY = '';
             let currentDate = new Date();
             //let formattedDate = new Intl.DateTimeFormat('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Seoul'}).format(currentDate);
             //formattedDate = formattedDate.replace(/\. /g, '-'); // 마침표를 하이픈으로 변경
