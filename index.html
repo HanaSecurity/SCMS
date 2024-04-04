@@ -38,7 +38,7 @@
             const salt = formattedDate; // 원하는 솔트 값
             const firstHash = await sha256(inputText + salt);
             const key = await sha256(firstHash);
-            document.getElementById('output').textContent = 'Generated Key: ' + key + ' / salt: ' + salt;
+            document.getElementById('output').textContent = 'Generated Key: ' + key.toLocaleUpperCase() + ' / salt: ' + salt;
         }
 
         function handleKeyPress(event) {
