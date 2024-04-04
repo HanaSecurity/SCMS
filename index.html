@@ -29,16 +29,20 @@
 
         // 솔트와 함께 SHA-256으로 키 생성
         async function generateKey() {
-            let SCMS_KEY = '';
-            let currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 9); // 한국 시간(GMT+9) 적용
-            let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11); // 2024-04-04-16
-            const salt = formattedDate; // 날짜로 솔트 값 지정
-            const firstHash = await sha256(inputText.value + salt); // 신청번호 + 솔트
-            const hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
-            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
-            //SCMS_KEY = hashKey.substr(7, 1) + hashKey.substr(14, 1) + hashKey.substr(21, 1) + hashKey.substr(28, 1) + hashKey.substr(35, 1) + hashKey.substr(42, 1) + hashKey.substr(49, 1) + hashKey.substr(56, 1);
-            document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
+			if (checkInputLength(inputText.value)) {
+				let SCMS_KEY = '';
+				let currentDate = new Date();
+				currentDate.setHours(currentDate.getHours() + 9); // 한국 시간(GMT+9) 적용
+				let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11); // 2024-04-04-16
+				const salt = formattedDate; // 날짜로 솔트 값 지정
+				const firstHash = await sha256(inputText.value + salt); // 신청번호 + 솔트
+				const hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
+				for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
+				//SCMS_KEY = hashKey.substr(7, 1) + hashKey.substr(14, 1) + hashKey.substr(21, 1) + hashKey.substr(28, 1) + hashKey.substr(35, 1) + hashKey.substr(42, 1) + hashKey.substr(49, 1) + hashKey.substr(56, 1);
+				document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
+			} else {
+				document.getElementById('output').innerText = "입력된 데이터가 12자리가 아닙니다. 다시 입력해주세요.";
+			}
         }
         
         function handleEnterKey(event) {
@@ -47,6 +51,11 @@
                 submitButton.click(); // 버튼 클릭 이벤트 발생
             }
         }
+		
+		function checkInputLength(input) {
+			// 입력된 데이터의 길이가 12인지 확인
+			return input.length === 12;
+		}
 
         inputText.addEventListener("keyup", handleEnterKey);
     </script>
