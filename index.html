@@ -9,7 +9,6 @@
     <h1>Key Generation</h1>
     <p>신청번호 입력</p>
     <label for="input">Input:</label>
-    <!--<input type="text" id="inputText" onkeypress="handleKeyPress(event)">-->
     <input type="text" id="inputText">
     <button id="submitButton" onclick="generateKey()">Generate Key</button>
     <p><div id="output"></div></p>
@@ -32,24 +31,15 @@
         async function generateKey() {
             let SCMS_KEY = '';
             let currentDate = new Date();
-            //let formattedDate = new Intl.DateTimeFormat('ko-KR', {year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Seoul'}).format(currentDate);
-            //formattedDate = formattedDate.replace(/\. /g, '-'); // 마침표를 하이픈으로 변경
-            //formattedDate = formattedDate.replace(/[\.\- ]/g, ''); // 마침표, 하이픈, 공백을 제거
             currentDate.setHours(currentDate.getHours() + 9); // 한국 시간(GMT+9) 적용
-            let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11);
-            const salt = formattedDate; // 원하는 솔트 값
-            const firstHash = await sha256(inputText + salt);
-            const hashKey = await sha256(firstHash);
-            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); }
+            let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11); // 2024-04-04-16
+            let salt = formattedDate; // 날짜로 솔트 값 지정
+            let firstHash = await sha256(inputText + salt); // 신청번호 + 솔트
+            let hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
+            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
             document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
         }
-        /*
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                generateKey(); // Enter 키를 누르면 generateKey() 함수 호출
-            }
-        }
-        */
+        
         function handleEnterKey(event) {
             if (window.event.keyCode === 13) { // Enter 키 코드는 13
                 event.preventDefault(); // 폼 제출 방지
