@@ -36,7 +36,7 @@
             const salt = formattedDate; // 날짜로 솔트 값 지정
             const firstHash = await sha256(inputText + salt); // 신청번호 + 솔트
             const hashKey = await sha256(firstHash); // SHA256 해싱 한번 더
-            for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
+            //for(let i=1; i<9; i++){ SCMS_KEY = SCMS_KEY + hashKey.substr(i*7, 1); } // 7번째 문자만 8개 추출
             document.getElementById('output').innerText = 'salt: ' + salt + '\n' + 'Hash Key: ' + hashKey.toLocaleUpperCase() + '\n' + 'SCMS KEY: ' + SCMS_KEY.toLocaleUpperCase();
         }
         
