@@ -36,11 +36,11 @@
             currentDate.setHours(currentDate.getHours() + 9); // 한국 시간(GMT+9) 적용
             let formattedDate = currentDate.toISOString().replace(/[-T:.]/g, '-').slice(0, -11);
             const salt = formattedDate; // 원하는 솔트 값
-            const key = await sha256(inputText + salt);
-            key = await sha256(key);
+            const firstHash = await sha256(inputText + salt);
+            const key = await sha256(firstHash);
             document.getElementById('output').textContent = 'Generated Key: ' + key + ' / salt: ' + salt;
         }
-
+        
         function handleEnterKey(event) {
             if (event.keyCode === 13) { // Enter 키 코드는 13
                 event.preventDefault(); // 폼 제출 방지
